@@ -7,4 +7,4 @@ be played back using a web interface.
 There is an Android project, Raspicast, that does similar. However, there is no IPhone version of it and I wanted family members to be able 
 to play back video on such devices without installing any application and just use a browser.
 
-
+2022-05-02 - Committed initial version with very rudimentary HTML interface.
