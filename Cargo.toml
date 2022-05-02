@@ -1,0 +1,8 @@
+[package]
+name = "omxserver"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+rouille = "3.5.0"
+askama = "0.10"

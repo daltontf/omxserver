@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <ul>
+        {% for file in files %}
+            <li>
+                <a href="{{ base }}/{{file}}">{{ file }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
