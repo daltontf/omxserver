@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" href="data:,">
         <style>
             table td button {
                 width: 100%;
@@ -30,7 +31,7 @@
             }
 
             window.onload = function() {
-                window.onbeforeunload = function () {
+                window.onunload = function () {
                     sendPut('stop');  
                 }
             }

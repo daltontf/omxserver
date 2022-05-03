@@ -1,5 +1,5 @@
 use std::io::prelude::*;
-use std::path::Path;
+use std::path::PathBuf;
 use std::process::{Child, ChildStdin, Command, Stdio};
 use std::sync::{Arc, Mutex};
 use std::{fs, io};
@@ -59,23 +59,30 @@ impl PlayerState {
 }
 
 fn main() {
-    let root = Path::new("/mnt/usb");
+    let args: Vec<String> = std::env::args().collect();
+
+    if args.len() < 2 {
+        println!("Usage:\n\tomxplayer <path to root> <tcp port>");
+        std::process::exit(1);
+    }
+
+    let mut root = PathBuf::new();
+
+    root.push(&args[1]);
 
     let omxplayer: Arc<Mutex<Option<PlayerState>>> = Arc::new(Mutex::new(Option::None));
 
     let mutex = Arc::clone(&omxplayer);
 
-    rouille::start_server("0.0.0.0:8080", move |request| {
+    rouille::start_server("0.0.0.0:".to_owned() + &args[2], move |request| {
         let url = request.url();
 
         let base = &url[1..];       
 
         if request.method().eq("PUT") {
-            println!("PUT {}", base);
             let mut maybe_player_state = mutex.lock().unwrap();
             if let Some(player_state) = maybe_player_state.as_mut() {
-                println!("player_state");
-                let (valid, success) = match base {
+                let (_valid, _success) = match base {
                     "pause_resume" => (true, player_state.send_key(" ")),
                     "seek-30s" => (true, player_state.send_key("\x1b[D")),
                     "seek+30s" => (true, player_state.send_key("\x1b[C")),
@@ -86,11 +93,9 @@ fn main() {
                 };
                 Response::html("")
             } else {
-                println!("empty");
                 Response::empty_404()
             }
         } else {
-            println!("base = {}", base);
             let file = root.join(base);
             if file.exists() {
                 if file.is_dir() {
@@ -98,9 +103,7 @@ fn main() {
                         .unwrap()
                         .map(|res| {
                             res.map(|e| {
-                                let file_name = e.file_name().into_string().unwrap();
-                                println!("file_name = {}", file_name);
-                                file_name
+                                e.file_name().into_string().unwrap()
                             })
                         })
                         .collect::<Result<Vec<_>, io::Error>>()
@@ -128,8 +131,7 @@ fn main() {
                     Response::html(player.render().unwrap())
                 }
             } else {
-                println!("empty_404");
-                // TODO if file not root redirect to root.
+                // TODO? if file not root redirect to root.
                 Response::empty_404()
             }
         }

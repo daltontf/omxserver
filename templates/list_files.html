@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" href="data:,">
         <style>
-            
+            a {
+                font-size: 36px;    
+            }
+
+            ul {
+                list-style-type: none;
+                width: 100%;
+                display: inline-block;
+                overflow: hidden;
+                border:  1px;
+            }  
         </style>
     </head>
     <body>
         <ul>
         {% for file in files %}
             <li>
-                <a href="{{ base }}/{{file}}">{{ file }}</a>
+                <a href="{{base}}/{{file}}">{{ file }}</a>
             </li>
         {% endfor %}
         </ul>
