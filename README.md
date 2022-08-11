@@ -19,13 +19,3 @@ cargo run /mnt/usb 8080
 ## Made Possible By ##
 - https://github.com/tomaka/rouille
 - https://github.com/djc/askama
-
-## Near Term Enhancements ##
-
-- A LOT of work on the HTML UI to look decent on mobile and desktop
-- The wrapped omxplayer will attempt to play any file it finds whether or not it can, nice to handle this better.
-
-## Someday Maybe ##
-- Support slideshows of still photos using omxiv.
-
-
